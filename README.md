@@ -21,3 +21,18 @@
 ## Describe consumer group
     - kafka-consumer-groups --bootstrap-server localhost:9092 --group text-consumer-group1 --describe
 
+
+
+## List all docker containers
+    - docker container ls -a
+
+## Remove containner
+    - docker container rm cc3f2ff51cab cd20b396a061
+
+
+
+## Tmux session re-attach
+    - tmux attach -t AT
+
+## Tmux list sessions
+    - tmux list-sessions
