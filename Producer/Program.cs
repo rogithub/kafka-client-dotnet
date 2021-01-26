@@ -13,12 +13,12 @@ namespace Exercise
             var config = new ProducerConfig
             {
                 BootstrapServers = "localhost:29092",
-                Partitioner = Partitioner.Random
+                Partitioner = Partitioner.Murmur2
             };
 
             using var p = new ProducerBuilder<string, string>(config).Build();
 
-            for (var i = 0; i < 10000; i++)
+            for (var i = 0; i < 100; i++)
             {
                 var msg = new Message<string, string>
                 {
