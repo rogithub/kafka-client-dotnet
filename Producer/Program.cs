@@ -6,24 +6,28 @@ namespace Exercise
 {
     class Program
     {
+
         static async Task Main(string[] args)
         {
+            string topic = "test";
             var config = new ProducerConfig
             {
-                BootstrapServers = "localhost:29092"
+                BootstrapServers = "localhost:29092",
+                Partitioner = Partitioner.Random
             };
 
-            using var p = new ProducerBuilder<Null, string>(config).Build();
+            using var p = new ProducerBuilder<string, string>(config).Build();
 
-            for (var i = 0; i < 3; i++)
+            for (var i = 0; i < 10000; i++)
             {
-                var msg = new Message<Null, string>
+                var msg = new Message<string, string>
                 {
+                    Key = i % 2 == 0 ? "even" : "odd",
                     Value = $"Message #{i}"
                 };
 
-                var dr = await p.ProduceAsync("test", msg);
-                Console.WriteLine($"Produced '{dr.Value}' to topic {dr.Topic}, partition {dr.Partition}, offset {dr.Offset}");
+                var dr = await p.ProduceAsync(topic, msg);
+                Console.WriteLine($"Produced '{dr.Key}'-'{dr.Value}' to topic {dr.Topic}, partition {dr.Partition}, offset {dr.Offset}");
             }
 
             Console.ReadKey();
